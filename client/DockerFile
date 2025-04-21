@@ -1,0 +1,11 @@
+FROM node:18-alpine
+WORKDIR /i228785_ScdLabMid_G
+COPY package.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+
+# mark the container as unhealthy if  server's /api/healthcheck endpoint issued an error status.
+HEALTHCHECK CMD curl --fail http://localhost/api/healthcheck || exit 1
+
+CMD ["npm", "start"]
